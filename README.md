@@ -1,59 +1,329 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel JSON Schema Validator
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application for managing and validating JSON schemas with dynamic form validation using Opis JSON Schema.
 
-## About Laravel
+## 📋 Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project provides a robust API for creating, managing, and validating data against JSON Schema definitions. It includes both API endpoints and a Filament admin panel for easy schema management.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **JSON Schema Management**: Create, read, and manage JSON Schema templates
+-   **Dynamic Form Validation**: Validate form submissions against stored schemas
+-   **Opis JSON Schema Integration**: Powerful validation using Opis JSON Schema library
+-   **Filament Admin Panel**: User-friendly interface for schema management
+-   **RESTful API**: Well-structured API endpoints with proper error handling
+-   **Comprehensive Validation**: Support for JSON Schema draft-06 and draft-07
+-   **Automatic API Documentation**: Integrated with Scramble for API documentation
 
-## Learning Laravel
+## 🚀 Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+-   **Framework**: Laravel 12.x
+-   **PHP**: 8.2+
+-   **Admin Panel**: Filament 4.0
+-   **JSON Schema Validation**: Opis JSON Schema 2.6
+-   **API Documentation**: Scramble
+-   **Database**: MySQL/PostgreSQL/SQLite
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📦 Installation
 
-## Laravel Sponsors
+### Prerequisites
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+-   PHP 8.2 or higher
+-   Composer
+-   Node.js & NPM
+-   MySQL/PostgreSQL/SQLite
 
-### Premium Partners
+### Setup Steps
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **Clone the repository**
 
-## Contributing
+    ```bash
+    git clone https://github.com/MalvinMs/opis-laravel.git
+    cd opis-laravel
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Install dependencies**
 
-## Code of Conduct
+    ```bash
+    composer install
+    npm install
+    ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. **Environment setup**
 
-## Security Vulnerabilities
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. **Configure database**
 
-## License
+    Update your `.env` file with database credentials:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```env
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=your_database
+    DB_USERNAME=your_username
+    DB_PASSWORD=your_password
+    ```
+
+5. **Run migrations**
+
+    ```bash
+    php artisan migrate
+    ```
+
+6. **Build assets**
+
+    ```bash
+    npm run build
+    ```
+
+7. **Start the development server**
+    ```bash
+    php artisan serve
+    ```
+
+## 🔌 API Endpoints
+
+### JSON Schema Endpoints
+
+#### Get All Schemas
+
+```http
+GET /api/json-schemas
+```
+
+**Response:**
+
+```json
+[
+    {
+        "id": 1,
+        "name": "User Registration Schema",
+        "schema": { ... },
+        "created_at": "2025-11-24T01:22:59.000000Z",
+        "updated_at": "2025-11-24T01:22:59.000000Z"
+    }
+]
+```
+
+#### Create Schema
+
+```http
+POST /api/json-schemas
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+    "name": "Contact Form Schema",
+    "schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "type": "object",
+        "properties": {
+            "email": {
+                "type": "string",
+                "format": "email"
+            },
+            "name": {
+                "type": "string",
+                "minLength": 3
+            }
+        },
+        "required": ["email", "name"]
+    }
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+    "success": true,
+    "message": "JSON Schema created successfully",
+    "data": { ... }
+}
+```
+
+### Form Endpoints
+
+#### Get All Forms
+
+```http
+GET /api/forms
+```
+
+#### Submit Form with Validation
+
+```http
+POST /api/forms/{templateId}
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```json
+{
+    "data": {
+        "email": "user@example.com",
+        "name": "John Doe"
+    }
+}
+```
+
+**Response (201 Created):**
+
+```json
+{
+    "success": true,
+    "message": "Form created successfully",
+    "data": { ... }
+}
+```
+
+**Validation Error Response (422):**
+
+```json
+{
+    "success": false,
+    "message": "Validation failed",
+    "errors": {
+        "data": [
+            "Validasi gagal pada email: The data must match the type string"
+        ]
+    }
+}
+```
+
+## 📖 Usage Examples
+
+### Example 1: User Registration Schema
+
+**Create Schema:**
+
+```bash
+curl -X POST http://localhost:8000/api/json-schemas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "User Registration",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 50
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "password": {
+          "type": "string",
+          "minLength": 8
+        }
+      },
+      "required": ["username", "email", "password"]
+    }
+  }'
+```
+
+**Submit Valid Form:**
+
+```bash
+curl -X POST http://localhost:8000/api/forms/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "data": {
+      "username": "johndoe",
+      "email": "john@example.com",
+      "password": "securepass123"
+    }
+  }'
+```
+
+### Example 2: Contact Form Schema
+
+```json
+{
+    "name": "Contact Request Form",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "fullName": {
+                "type": "string",
+                "minLength": 3
+            },
+            "email": {
+                "type": "string",
+                "format": "email"
+            },
+            "phone": {
+                "type": "string",
+                "minLength": 10
+            },
+            "message": {
+                "type": "string",
+                "minLength": 10
+            }
+        },
+        "required": ["fullName", "email", "message"]
+    }
+}
+```
+
+## 🛠️ Development
+
+### Running Tests
+
+```bash
+php artisan test
+```
+
+### Code Style
+
+```bash
+./vendor/bin/pint
+```
+
+### Access Filament Admin Panel
+
+```
+http://localhost:8000/admin
+```
+
+## 📚 Documentation
+
+-   [Opis JSON Schema Documentation](https://opis.io/json-schema/)
+-   [Laravel Documentation](https://laravel.com/docs)
+-   [Filament Documentation](https://filamentphp.com/docs)
+
+## 🔐 Schema Support
+
+This application supports **JSON Schema Draft-06 and Draft-07**.
+
+> **Note:** While the Opis library v2.6 officially supports draft-06 and draft-07, schemas using later drafts (2019-09, 2020-12) may work if they don't use unsupported features. For best compatibility, use draft-07.
+
+**Recommended Schema Declaration:**
+
+```json
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    ...
+}
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

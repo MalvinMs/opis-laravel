@@ -14,7 +14,19 @@ use Opis\JsonSchema\Validator;
 
     public function __construct($schema)
     {
-        $this->schema = is_string($schema) ? json_decode($schema) : $schema;
+        // Convert schema to stdClass object for Opis validator
+        // Whether it comes as string (from Filament) or array/object (from API)
+        if (is_string($schema)) {
+            $this->schema = json_decode($schema);
+        } else {
+            // Convert array/object to stdClass by encoding then decoding
+            $this->schema = json_decode(json_encode($schema));
+        }
+        
+        // Validate that schema was properly converted
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException('Invalid JSON schema format: ' . json_last_error_msg());
+        }
     }
     /**
      * Run the validation rule.
